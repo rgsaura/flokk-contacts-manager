@@ -1,0 +1,52 @@
+PODS:
+  - desktop_window (0.0.1):
+    - FlutterMacOS
+  - file_selector_macos (0.0.1):
+    - FlutterMacOS
+  - FlutterMacOS (1.0.0)
+  - package_info (0.0.1):
+    - FlutterMacOS
+  - path_provider_macos (0.0.1):
+    - FlutterMacOS
+  - shared_preferences_macos (0.0.1):
+    - FlutterMacOS
+  - url_launcher_macos (0.0.1):
+    - FlutterMacOS
+
+DEPENDENCIES:
+  - desktop_window (from `Flutter/ephemeral/.symlinks/plugins/desktop_window/macos`)
+  - file_selector_macos (from `Flutter/ephemeral/.symlinks/plugins/file_selector_macos/macos`)
+  - FlutterMacOS (from `Flutter/ephemeral`)
+  - package_info (from `Flutter/ephemeral/.symlinks/plugins/package_info/macos`)
+  - path_provider_macos (from `Flutter/ephemeral/.symlinks/plugins/path_provider_macos/macos`)
+  - shared_preferences_macos (from `Flutter/ephemeral/.symlinks/plugins/shared_preferences_macos/macos`)
+  - url_launcher_macos (from `Flutter/ephemeral/.symlinks/plugins/url_launcher_macos/macos`)
+
+EXTERNAL SOURCES:
+  desktop_window:
+    :path: Flutter/ephemeral/.symlinks/plugins/desktop_window/macos
+  file_selector_macos:
+    :path: Flutter/ephemeral/.symlinks/plugins/file_selector_macos/macos
+  FlutterMacOS:
+    :path: Flutter/ephemeral
+  package_info:
+    :path: Flutter/ephemeral/.symlinks/plugins/package_info/macos
+  path_provider_macos:
+    :path: Flutter/ephemeral/.symlinks/plugins/path_provider_macos/macos
+  shared_preferences_macos:
+    :path: Flutter/ephemeral/.symlinks/plugins/shared_preferences_macos/macos
+  url_launcher_macos:
+    :path: Flutter/ephemeral/.symlinks/plugins/url_launcher_macos/macos
+
+SPEC CHECKSUMS:
+  desktop_window: de6acd6053564bdccd9f4b9473d25bf4f2ad9bdf
+  file_selector_macos: 3310b8135250059788f31680a6927ef7fdf9e87f
+  FlutterMacOS: 8f6f14fa908a6fb3fba0cd85dbd81ec4b251fb24
+  package_info: e551c138e2e968cbbe8acf7f4afb9a5c672a1b08
+  path_provider_macos: 2f107c4387af4a1b2091cca666be628d3271b908
+  shared_preferences_macos: 5efe3f1d778c88c00d71e92d0f20c64377d346c5
+  url_launcher_macos: 3f69d6373d1310015de25707760b1f30121b8e3a
+
+PODFILE CHECKSUM: f9e3c067b6562df35282e5c978a52ffa1ca78da6
+
+COCOAPODS: 1.16.2

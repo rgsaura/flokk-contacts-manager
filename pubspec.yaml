@@ -1,0 +1,94 @@
+name: flokk
+description: A fresh and modern Google Contacts manager that integrates with GitHub and Twitter.
+version: 1.1.0
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  animations: ^2.0.0-nullsafety.0
+  cupertino_icons: ^1.0.2
+  collection: ^1.15.0
+  dartx: ^0.7.1
+  desktop_window: ^0.4.0
+  dotted_border: ^2.0.0-nullsafety.0
+  draggable_scrollbar: ^0.1.0
+  file_selector: ^0.8.2
+  file_selector_windows: ^0.0.2
+  file_selector_macos: ^0.0.4
+  file_selector_linux: ^0.0.2
+  file_selector_web: ^0.8.1
+  flutter_hooks: ^0.16.0
+  github: ^8.1.0
+  google_sign_in: ^6.1.0
+  googleapis: ^2.0.0
+  http: ^0.13.1
+  html: ^0.15.0
+  image: ^3.0.2
+  intl: ^0.17.0
+  json_annotation: ^4.0.1
+  package_info: ^2.0.0
+  path: ^1.8.0
+  path_provider: ^2.0.1
+  provider: ^5.0.0
+  shared_preferences: ^2.0.5
+  sized_context: ^1.0.0-nullsafety
+  statsfl: ^2.0.1-nullsafety
+  styled_widget: ^0.3.1
+  textstyle_extensions: ^2.0.0-nullsafety
+  timeago: ^3.0.2
+  file: ^6.0.0
+  tuple: ^2.0.0
+  universal_platform: ^1.0.0-nullsafety
+  url_launcher: ^6.0.3
+  xdg_directories: ^0.2.0
+
+dev_dependencies:
+  build_runner: ^2.0.0
+  json_serializable: ^4.1.0 # Generate JSON parsers: flutter pub run build_runner build --delete-conflicting-outputs
+
+dependency_overrides:
+  platform: ^3.1.0
+  file: ^6.0.0
+
+flutter:
+  uses-material-design: true
+  fonts:
+    - family: Quicksand
+      fonts:
+        - asset: assets/fonts/Quicksand-Light.ttf
+          weight: 200
+        - asset: assets/fonts/Quicksand-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Quicksand-SemiBold.ttf
+          weight: 500
+        - asset: assets/fonts/Quicksand-Medium.ttf
+          weight: 600
+        - asset: assets/fonts/Quicksand-Bold.ttf
+          weight: 700
+
+    - family: Lato
+      fonts:
+        - asset: assets/fonts/Lato-Thin.ttf
+          weight: 200
+        - asset: assets/fonts/Lato-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Lato-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Lato-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Lato-Black.ttf
+          weight: 800
+
+    - family: OpenSansEmoji
+      fonts:
+        - asset: assets/fonts/OpenSansEmoji.ttf
+
+  assets:
+    - assets/images/
+    - assets/images/birds/
+    - assets/images/flokk-logo.svg
+    - assets/images/avatars/
+    - assets/icons/
+
