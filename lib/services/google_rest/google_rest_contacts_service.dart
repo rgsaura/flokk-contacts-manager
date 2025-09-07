@@ -95,22 +95,37 @@ class GoogleRestContactsService {
     nextPageToken = result.content?.nextPageToken ?? "";
     syncToken = result.content?.syncToken ?? "";
 
-    //Attempt to load all chunks of data, just for edge cases that have > 2000 contacts (max page size)
-    while (nextPageToken.isNotEmpty && retryCount < 3) {
-      ServiceResult<GetContactsResult> result = await get(
+    //Attempt to load all chunks of data, for cases with many contacts
+    print("[GoogleRestContactsService] Starting pagination loop. Initial nextPageToken: $nextPageToken");
+    while (nextPageToken.isNotEmpty && retryCount < 10) { // Increased retry limit
+      print("[GoogleRestContactsService] Fetching page with token: $nextPageToken");
+      ServiceResult<GetContactsResult> pageResult = await get(
         accessToken,
         nextPageToken: nextPageToken,
       );
 
-      if (result.success) {
-        list.addAll(result.content?.contacts ?? []);
-        nextPageToken = result.content?.nextPageToken ?? "";
+      if (pageResult.success) {
+        List<ContactData> newContacts = pageResult.content?.contacts ?? [];
+        list.addAll(newContacts);
+        nextPageToken = pageResult.content?.nextPageToken ?? "";
+        print("[GoogleRestContactsService] Added ${newContacts.length} contacts. Total: ${list.length}. Next token: $nextPageToken");
       } else {
         //Possible for subsequent calls to fail and return 503
         retryCount++;
+        print("[GoogleRestContactsService] Page request failed, retry $retryCount/10");
+        
+        // Wait a bit before retrying
+        await Future.delayed(Duration(milliseconds: 1000));
       }
     }
-    return result;
+    
+    print("[GoogleRestContactsService] Pagination complete. Total contacts: ${list.length}");
+    
+    // Update the result to include all paginated contacts
+    return ServiceResult(
+      GetContactsResult(list, nextPageToken: nextPageToken, syncToken: syncToken), 
+      result.response
+    );
   }
 
   //List of valid PersonFields can be found here https://developers.google.com/people/api/rest/v1/people.connections/list
@@ -127,7 +142,7 @@ class GoogleRestContactsService {
         "access_token=$accessToken"
         "&personFields=${kAllPersonFields.join(',')}"
         "&sortOrder=FIRST_NAME_ASCENDING"
-        "&pageSize=2000";
+        "&pageSize=1000"; // Google's max is 1000, not 2000
 
     if (nextPageToken.isNotEmpty) {
       url += "&pageToken=$nextPageToken";
@@ -160,7 +175,7 @@ class GoogleRestContactsService {
         }
       }
     }
-    return ServiceResult(GetContactsResult(list, nextPageToken: nextPageToken, syncToken: newSyncToken), response);
+    return ServiceResult(GetContactsResult(list, nextPageToken: newNextPageToken, syncToken: newSyncToken), response);
   }
 
   //List of valid PersonFields can be found here https://developers.google.com/people/api/rest/v1/people/updateContact
