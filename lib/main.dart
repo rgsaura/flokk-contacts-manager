@@ -12,6 +12,7 @@ import 'package:flokk/models/github_model.dart';
 import 'package:flokk/models/twitter_model.dart';
 import 'package:flokk/services/github_rest_service.dart';
 import 'package:flokk/services/google_rest/google_rest_service.dart';
+import 'package:flokk/services/periodic_sync_service.dart';
 import 'package:flokk/services/twitter_rest_service.dart';
 import 'package:flokk/styles.dart';
 import 'package:flokk/themes.dart';
@@ -101,6 +102,9 @@ class _MainAppState extends State<MainApp> {
       // Polling for social feeds, will run continuously until cancelled
       _pollSocialCommand = PollSocialCommand(context)..execute(true);
 
+      // Initialize periodic sync service
+      PeriodicSyncService.instance.initialize(context);
+
       /// ///////////////////////////////////////////////
       /// Bootstrap app
       /// When bootstrap is complete, we know whether to sign in, or not
@@ -124,6 +128,7 @@ class _MainAppState extends State<MainApp> {
   void dispose() {
     _connectionChecker.cancel();
     _pollSocialCommand.cancel();
+    PeriodicSyncService.instance.dispose();
     super.dispose();
   }
 

@@ -141,6 +141,17 @@ class AppModel extends AbstractModel {
     notifyListeners();
   }
 
+  /// //////////////////////////////////////////
+  /// Periodic sync settings (serialized)
+  String get periodicSyncInterval => _periodicSyncInterval;
+  String _periodicSyncInterval = '1hour'; // Default to 1 hour
+
+  set periodicSyncInterval(String value) {
+    _periodicSyncInterval = value;
+    scheduleSave();
+    notifyListeners();
+  }
+
   @override
   void copyFromJson(Map<String, dynamic> json) {
     var v = ThemeType.values;
@@ -149,6 +160,7 @@ class AppModel extends AbstractModel {
     _dashContactsSection = DashboardContactsSectionType.values[json['_dashContactsSection'] ?? 0];
     _dashSocialSection = DashboardSocialSectionType.values[json['_dashSocialSection'] ?? 0];
     version = json['version'] ?? "0.0.0";
+    _periodicSyncInterval = json['_periodicSyncInterval'] ?? '1hour';
   }
 
   @override
@@ -156,7 +168,8 @@ class AppModel extends AbstractModel {
         "_theme": _theme.index,
         'version': version,
         '_dashContactsSection': _dashContactsSection.index,
-        '_dashSocialSection': _dashSocialSection.index
+        '_dashSocialSection': _dashSocialSection.index,
+        '_periodicSyncInterval': _periodicSyncInterval,
       };
 
   /// [SB] Just for easy testing, remove later

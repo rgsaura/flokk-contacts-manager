@@ -3,6 +3,7 @@ import 'package:flokk/_internal/utils/color_utils.dart';
 import 'package:flokk/app_extensions.dart';
 import 'package:flokk/commands/logout_command.dart';
 import 'package:flokk/models/app_model.dart';
+import 'package:flokk/services/periodic_sync_service.dart';
 import 'package:flokk/styled_components/buttons/transparent_btn.dart';
 import 'package:flokk/styled_components/flokk_logo.dart';
 import 'package:flokk/styled_components/styled_container.dart';
@@ -56,6 +57,103 @@ class _MainSideMenuState extends State<MainSideMenu> {
   }
 
   void _handleLogoutPressed() => LogoutCommand(context).execute(doConfirm: true);
+
+  void _handleSettingsPressed() => _showSettingsDialog();
+
+  void _showSettingsDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Settings', style: TextStyles.H2),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Auto-sync Contacts:', style: TextStyles.Body1),
+              SizedBox(height: 8),
+              Consumer<AppModel>(
+                builder: (context, appModel, _) {
+                  return DropdownButton<String>(
+                    value: appModel.periodicSyncInterval,
+                    isExpanded: true,
+                    items: PeriodicSyncService.syncIntervals.keys
+                        .map((String key) {
+                      String displayText;
+                      switch (key) {
+                        case 'disabled':
+                          displayText = 'Disabled';
+                          break;
+                        case '15min':
+                          displayText = 'Every 15 minutes';
+                          break;
+                        case '30min':
+                          displayText = 'Every 30 minutes';
+                          break;
+                        case '1hour':
+                          displayText = 'Every hour';
+                          break;
+                        case '2hours':
+                          displayText = 'Every 2 hours';
+                          break;
+                        case '6hours':
+                          displayText = 'Every 6 hours';
+                          break;
+                        case '12hours':
+                          displayText = 'Every 12 hours';
+                          break;
+                        case '24hours':
+                          displayText = 'Once daily';
+                          break;
+                        default:
+                          displayText = key;
+                      }
+                      return DropdownMenuItem<String>(
+                        value: key,
+                        child: Text(displayText),
+                      );
+                    }).toList(),
+                    onChanged: (String? newValue) {
+                      if (newValue != null) {
+                        PeriodicSyncService.instance.updateSyncInterval(newValue);
+                      }
+                    },
+                  );
+                },
+              ),
+              SizedBox(height: 16),
+              Text('Sync Status:', style: TextStyles.Body1),
+              Text(
+                PeriodicSyncService.instance.isSyncEnabled 
+                    ? 'Active' 
+                    : 'Disabled',
+                style: TextStyles.Body2.copyWith(
+                  color: PeriodicSyncService.instance.isSyncEnabled 
+                      ? Colors.green 
+                      : Colors.grey,
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TransparentBtn(
+              child: Text('Sync Now'),
+              onPressed: () async {
+                await PeriodicSyncService.instance.syncNow();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Manual sync completed')),
+                );
+              },
+            ),
+            TransparentBtn(
+              child: Text('Close'),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   void _handlePageSelected(PageType pageType) => widget.onPageSelected?.call(pageType);
 
@@ -162,6 +260,24 @@ class _MainSideMenuState extends State<MainSideMenu> {
                         ].toRow(mainAxisAlignment: MainAxisAlignment.center),
 
                         VSpace(Insets.m),
+
+                        /// Settings Btn
+                        TransparentBtn(
+                          hoverColor: theme.txt.withOpacity(.05),
+                          contentPadding: EdgeInsets.all(Insets.m),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.settings, color: Colors.white, size: 16),
+                              SizedBox(width: 8),
+                              Text("SETTINGS", style: TextStyles.Btn.textColor(Colors.white)),
+                            ],
+                          ),
+                          onPressed: _handleSettingsPressed,
+                        ),
+
+                        VSpace(Insets.s),
 
                         /// Sign Out Btn
                         TransparentBtn(
