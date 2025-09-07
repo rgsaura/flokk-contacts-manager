@@ -277,7 +277,7 @@ class _MainSideMenuState extends State<MainSideMenu> {
                           onPressed: _handleSettingsPressed,
                         ),
 
-                        VSpace(Insets.s),
+                        VSpace(Insets.sm),
 
                         /// Sign Out Btn
                         TransparentBtn(
